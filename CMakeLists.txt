@@ -81,7 +81,7 @@ include(CMakeInfo.txt)
 #-----------------------------------------------------------------------------
 # Define source files for the library
 set(DEMENTIA_SOURCE_FILES
-  src/dementia.c
+  src/memory.c
   # add new source files here...
 )
 
