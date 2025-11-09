@@ -23,7 +23,6 @@
 #pragma once
 
 #include <stddef.h>
-#include <stdint.h>
 #include <stdio.h>
 
 #include "dementia/apidef.h"
@@ -41,6 +40,7 @@
           otherwise returns `NULL`.
   @note As a library user you shouldn't use this function at all. It is better
         to use @ref remember macro with automatic metadata creation.
+  @note If the size is 0 function will return NULL.
 */
 __DEMENTIA_API__ void *allocate_memory (size_t size, MemoryMetadata metadata);
 
@@ -54,6 +54,8 @@ __DEMENTIA_API__ void *allocate_memory (size_t size, MemoryMetadata metadata);
   @warning If passed memory block wasn't previously returned
            by the @ref allocate_memory function or @ref remember macro
            the behaviour is undefined.
+  @note If the passed block is NULL function will return NULL.
+  @note If the new_size is zero passed memory block will be freed.
 */
 __DEMENTIA_API__ void *recollect (void *block, size_t new_size);
 
@@ -82,28 +84,5 @@ __DEMENTIA_API__ void forget (void *block);
     _size, (MemoryMetadata) {.origin_file_path     = __FILE__,     \
                              .origin_line_number   = __LINE__,     \
                              .origin_function_name = __FUNCTION__, \
-                             .tag                  = _tag}         \
-  )\
-
-/*=============================================================================
-   UTILITY FUNCTIONS
- *=============================================================================*/
-
-/*
-  @brief Prints an array of integers to stdout
-  @param array Pointer to the array of integers
-  @param count Number of elements in the array
-  @details Prints the array in the format: [value1, value2, ..., valueN]
-*/
-static inline void
-print_int_array (const int *const array, const size_t count)
-{
-  if (array == NULL) { return; }
-
-  fputs ("[", stdout);
-  for (size_t i = 0; i < count; ++i)
-  {
-    printf ("%d%s", array[ i ], i + 1 < count ? ", " : "");
-  }
-  fputs ("]", stdout);
-}
+                             .tag                  = (_tag)}       \
+  )

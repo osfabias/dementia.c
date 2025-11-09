@@ -3,6 +3,8 @@
 
 #include <dementia/memory.h>
 
+#include "utils.h"
+
 int main (void)
 {
   // Allocate initial memory block using `remember` macro

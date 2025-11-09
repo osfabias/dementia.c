@@ -3,6 +3,8 @@
 
 #include <dementia/memory.h>
 
+#include "utils.h"
+
 int main (void)
 {
   // Allocate memory block using `remember` macro
@@ -18,13 +20,7 @@ int main (void)
   // Fill memory with some data
   for (int i = 0; i < number_count; ++i) { numbers[ i ] = i * 2; }
 
-  // Print the data kept in memory
-  fputs ("Saved data: [", stdout);
-  for (int i = 0; i < number_count; ++i)
-  {
-    printf ("%d%s", numbers[ i ], i + 1 < number_count ? ", " : "");
-  }
-  puts ("]");
+  print_int_array (numbers, number_count);
 
   // Free allocated memory block using `forget` function
   forget (numbers);

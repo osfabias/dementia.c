@@ -50,6 +50,8 @@ typedef struct
 
 void *allocate_memory (const size_t size, const MemoryMetadata metadata)
 {
+  if (size == 0) { return NULL; }
+
   const size_t total_size = sizeof (MemoryBlockHeader) + size;
 
   MemoryBlockHeader *const header = (MemoryBlockHeader *)malloc (total_size);
@@ -66,10 +68,17 @@ void *allocate_memory (const size_t size, const MemoryMetadata metadata)
   return user_block;
 }
 
-void *recollect (void *block, const size_t new_size)
+void *recollect (void *const block, const size_t new_size)
 {
   if (block == NULL) { return NULL; }
 
+  if (new_size == 0)
+  {
+    forget (block);
+    return NULL;
+  }
+
+  // Resize passed memory block
   MemoryBlockHeader *const old_header =
     (MemoryBlockHeader *)((char *)block - sizeof (MemoryBlockHeader));
 
@@ -92,7 +101,7 @@ void *recollect (void *block, const size_t new_size)
   return new_user_block;
 }
 
-void forget (void *block)
+void forget (void *const block)
 {
   if (block == NULL) { return; }
 

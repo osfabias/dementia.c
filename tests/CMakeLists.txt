@@ -35,7 +35,11 @@ foreach(_SRC IN LISTS TEST_SOURCES)
 
   # Apply same compile options as the main library
   if(DEMENTIA_COMPILE_OPTIONS)
-    target_compile_options(${_NAME} PRIVATE ${DEMENTIA_COMPILE_OPTIONS})
+    target_compile_options(
+      ${_NAME} PRIVATE
+      ${DEMENTIA_COMPILE_OPTIONS}
+      -Wno-c99-extensions
+    )
   endif()
 
   list(APPEND _ALL_TEST_TARGETS ${_NAME})
