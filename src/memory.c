@@ -59,6 +59,24 @@ void *allocate_memory (const size_t size, const MemoryMetadata metadata)
   return (void *)(header + 1);
 }
 
+void *recollect (void *block, const size_t new_size)
+{
+  if (block == NULL) { return NULL; }
+
+  MemoryBlockHeader *const old_header =
+    (MemoryBlockHeader *)((char *)block - sizeof (MemoryBlockHeader));
+
+  const size_t new_total_size = sizeof (MemoryBlockHeader) + new_size;
+
+  MemoryBlockHeader *const new_header =
+    (MemoryBlockHeader *)realloc (old_header, new_total_size);
+  if (new_header == NULL) { return NULL; }
+
+  new_header->size = new_size;
+
+  return (void *)(new_header + 1);
+}
+
 void forget (void *block)
 {
   if (block == NULL) { return; }

@@ -44,6 +44,19 @@
 __DEMENTIA_API__ void *allocate_memory (size_t size, MemoryMetadata metadata);
 
 /*
+  @brief Reallocates block of memory to fit the desired size
+  @param block Memory block to resize
+  @param new_size Size to resize a memory block to
+  @return On success returns a pointer to a memory block of the requested size,
+          otherwise returns `NULL`. If function fails, the original memory block
+          stays in memory untouched.
+  @warning If passed memory block wasn't previously returned
+           by the @ref allocate_memory function or @ref remember macro
+           the behaviour is undefined.
+*/
+__DEMENTIA_API__ void *recollect (void *block, size_t new_size);
+
+/*
   @brief Frees allocated block of memory
   @param block Memory block to free
   @warning If passed memory block wasn't previously returned
