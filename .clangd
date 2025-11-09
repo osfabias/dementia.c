@@ -1,13 +1,5 @@
 CompileFlags:
-  Add:
-    - -std=c99
-    - -Wall
-    - -Wextra
-    - -Wpedantic
-    - -Wno-gnu-zero-variadic-macro-arguments
-    - -I./include
-    - -I./src
-    - -D__MYLIB_DEBUG__=1
+  CompilationDatabase: build
   Remove:
     - -march=*
     - -mtune=*
