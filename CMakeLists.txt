@@ -106,8 +106,8 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
   target_compile_definitions(dementia PUBLIC __DEMENTIA_DEBUG__)
 endif()
 
-if(DEMENTIA_BUILD_EXAMPLE)
-  add_subdirectory(example)
+if(DEMENTIA_BUILD_EXAMPLES)
+  add_subdirectory(examples)
 endif()
 
 if(DEMENTIA_BUILD_TESTS)
