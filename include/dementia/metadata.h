@@ -35,6 +35,8 @@ typedef struct
   const char *const origin_file_path;
   /* Name of a function where a memory block allocated */
   const char *const origin_function_name;
+  /* Time when the memory block allocate */
+  const time_t timestamp;
   /* Line number where a memory allocation function was called */
   const uint32_t origin_line_number;
   /*

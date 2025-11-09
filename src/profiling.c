@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <unistd.h>
 
 #include "dementia/metadata.h"
@@ -87,24 +88,38 @@ size_t print_allocated_memory_blocks_info (const PrintBlocksInfoArgs *const args
     BOLD FG_CYAN "#%zu" STYLE_RESET " block " DIM "%p" STYLE_RESET ":\n"
                  "  tag: " FG_YELLOW "%u" STYLE_RESET "\n"
                  "  size: " FG_GREEN "%zu" STYLE_RESET " bytes\n"
+                 "  timestamp: " FG_CYAN "%s" STYLE_RESET "\n"
                  "  origin: " FG_BLUE "%s" STYLE_RESET "()"
                  " at " FG_MAGENTA "%s" STYLE_RESET ":" DIM "%u" STYLE_RESET "\n";
 
   static const char *const FORMAT_PLAIN = "#%zu block %p:\n"
                                           "  tag: %u\n"
                                           "  size: %zu bytes\n"
+                                          "  timestamp: %s\n"
                                           "  origin: %s() at %s:%u\n";
 
   const char *const format = args->colorize ? FORMAT_COLORIZED : FORMAT_PLAIN;
 
   size_t                printed = 0;
   const AllocationNode *current = g_allocation_state.head;
+  char                  timestamp_str[64];
 
   while (current != NULL && printed < args->max_count)
   {
+    /* Format timestamp */
+    struct tm *timeinfo = localtime (&current->metadata.timestamp);
+    if (timeinfo != NULL)
+    {
+      strftime (timestamp_str, sizeof (timestamp_str), "%Y-%m-%d %H:%M:%S", timeinfo);
+    }
+    else
+    {
+      snprintf (timestamp_str, sizeof (timestamp_str), "unknown");
+    }
+
     fprintf (
       args->out, format, printed + 1, current->user_block, current->metadata.tag,
-      current->size, current->metadata.origin_function_name,
+      current->size, timestamp_str, current->metadata.origin_function_name,
       current->metadata.origin_file_path, current->metadata.origin_line_number
     );
 

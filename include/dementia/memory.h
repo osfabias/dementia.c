@@ -24,6 +24,7 @@
 
 #include <stddef.h>
 #include <stdio.h>
+#include <time.h>
 
 #include "dementia/apidef.h"
 #include "dementia/metadata.h"
@@ -83,6 +84,7 @@ __DEMENTIA_API__ void forget (void *block);
   allocate_memory (                                                \
     _size, (MemoryMetadata) {.origin_file_path     = __FILE__,     \
                              .origin_line_number   = __LINE__,     \
+                             .timestamp            = time (NULL),  \
                              .origin_function_name = __FUNCTION__, \
                              .tag                  = (_tag)}       \
   )
