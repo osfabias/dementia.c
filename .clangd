@@ -1,0 +1,47 @@
+CompileFlags:
+  Add:
+    - -std=c99
+    - -Wall
+    - -Wextra
+    - -Wpedantic
+    - -Wno-gnu-zero-variadic-macro-arguments
+    - -I./include
+    - -I./src
+    - -D__MYLIB_DEBUG__=1
+  Remove:
+    - -march=*
+    - -mtune=*
+
+Index:
+  Background: Build
+  StandardLibrary: Yes
+
+InlayHints:
+  Enabled: Yes
+  ParameterNames: Yes
+  DeducedTypes: Yes
+
+Diagnostics:
+  ClangTidy:
+    Add:
+      - readability-*
+      - performance-*
+      - modernize-*
+      - bugprone-*
+    Remove:
+      - readability-magic-numbers
+      - modernize-use-trailing-return-type
+  UnusedIncludes: Strict
+  MissingIncludes: Strict
+
+Completion:
+  AllScopes: Yes
+  IncludeIneligibleResults: No
+
+Hover:
+  ShowAKA: Yes
+
+References:
+  ShowAKA: Yes
+
+DocumentationFormat: Doxygen

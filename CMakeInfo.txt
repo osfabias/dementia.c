@@ -1,0 +1,29 @@
+message("┏━━━━━━━ ${PROJECT_NAME} v${PROJECT_VERSION} ━━━━━━━")
+message("┃ ${PROJECT_DESCRIPTION}")
+message("┃")
+message("┃ 📦 Build type: ${CMAKE_BUILD_TYPE}")
+message("┃")
+message("┃ 🔧 Options:")
+
+get_cmake_property(CMAKE_OPTIONS CACHE_VARIABLES)
+foreach(OPTION ${CMAKE_OPTIONS})
+  if (NOT OPTION MATCHES "^DEMENTIA_.*")
+    continue()
+  endif()
+
+  if(${${OPTION}} STREQUAL "ON")
+    set(OPTION_VALUE "✓")  # Checkmark for ON
+  elseif(${${OPTION}} STREQUAL "OFF")
+    set(OPTION_VALUE "✗")  # Cross for OFF
+  else()
+    set(OPTION_VALUE "${${OPTION}}")  # Display the value for non-bool options
+  endif()
+
+  get_property(OPTION_HELP_STRING CACHE ${OPTION} PROPERTY HELPSTRING)
+  if(OPTION_HELP_STRING)
+    message("┃ • ${OPTION}: ${OPTION_VALUE} # ${OPTION_HELP_STRING}")
+  endif()
+endforeach()
+
+message("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+

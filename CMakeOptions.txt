@@ -1,0 +1,4 @@
+option(DEMENTIA_BUILD_SHARED "Build library as a shared library." OFF)
+option(DEMENTIA_BUILD_EXAMPLE "Build example program." ${DEMENTIA_IS_STANDALONE_BUILD})
+option(DEMENTIA_BUILD_TESTS "Build test programs." ${DEMENTIA_IS_STANDALONE_BUILD})
+option(DEMENTIA_ENABLE_COVERAGE "Enable code coverage for tests (requires Debug build)." ${DEMENTIA_IS_STANDALONE_BUILD})
