@@ -27,6 +27,8 @@
 #include "dementia/memory.h"
 #include "dementia/metadata.h"
 
+#include "src/profiling.h"
+
 /*=============================================================================
    INTERNAL STRUCTURES
  *=============================================================================*/
@@ -56,7 +58,12 @@ void *allocate_memory (const size_t size, const MemoryMetadata metadata)
   memcpy (&header->metadata, &metadata, sizeof (MemoryMetadata));
   header->size = size;
 
-  return (void *)(header + 1);
+  void *const user_block = (void *)(header + 1);
+
+  /* Register allocation with profiling system */
+  profiling_register_allocation (user_block, &metadata, size);
+
+  return user_block;
 }
 
 void *recollect (void *block, const size_t new_size)
@@ -74,12 +81,23 @@ void *recollect (void *block, const size_t new_size)
 
   new_header->size = new_size;
 
-  return (void *)(new_header + 1);
+  void *const new_user_block = (void *)(new_header + 1);
+
+  /* Update allocation in profiling system (pointer may have changed if realloc moved) */
+  const AllocationUpdateArgs update_args = {
+    .old_user_block = block, .new_user_block = new_user_block, .new_size = new_size
+  };
+  profiling_update_allocation (&update_args);
+
+  return new_user_block;
 }
 
 void forget (void *block)
 {
   if (block == NULL) { return; }
+
+  /* Unregister allocation from profiling system before freeing */
+  profiling_unregister_allocation (block);
 
   MemoryBlockHeader *const header =
     (MemoryBlockHeader *)((char *)block - sizeof (MemoryBlockHeader));

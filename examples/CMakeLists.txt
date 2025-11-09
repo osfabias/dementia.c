@@ -5,3 +5,7 @@ target_compile_options(remember_and_forget PRIVATE ${DEMENTIA_COMPILE_OPTIONS})
 add_executable(recollect recollect.c)
 target_link_libraries(recollect PRIVATE dementia)
 target_compile_options(recollect PRIVATE ${DEMENTIA_COMPILE_OPTIONS})
+
+add_executable(profiling profiling.c)
+target_link_libraries(profiling PRIVATE dementia)
+target_compile_options(profiling PRIVATE ${DEMENTIA_COMPILE_OPTIONS})

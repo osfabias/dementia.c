@@ -25,6 +25,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+/* Maximum memory tag value, that tag can be set to */
+#define MAX_MEMORY_TAG_VALUE (uint32_t)(127)
+
 /* Metadata for a block of memory */
 typedef struct
 {
